@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(ModBuilder CXX)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
