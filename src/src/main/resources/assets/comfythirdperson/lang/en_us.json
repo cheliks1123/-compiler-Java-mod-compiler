@@ -1,0 +1,8 @@
+{
+  "key.categories.comfythirdperson": "Comfy Third Person",
+  "key.comfythirdperson.swap_shoulder": "Swap shoulder",
+  "key.comfythirdperson.reset_camera": "Reset camera",
+  "msg.comfythirdperson.distance": "Camera distance: %s",
+  "msg.comfythirdperson.shoulder": "Camera shoulder offset: %s",
+  "msg.comfythirdperson.reset": "Camera reset"
+}
