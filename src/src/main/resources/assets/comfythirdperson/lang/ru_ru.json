@@ -1,8 +1,0 @@
-{
-  "key.categories.comfythirdperson": "Comfy Third Person",
-  "key.comfythirdperson.swap_shoulder": "Сменить плечо камеры",
-  "key.comfythirdperson.reset_camera": "Сбросить камеру",
-  "msg.comfythirdperson.distance": "Дистанция камеры: %s",
-  "msg.comfythirdperson.shoulder": "Смещение камеры через плечо: %s",
-  "msg.comfythirdperson.reset": "Камера сброшена"
-}
