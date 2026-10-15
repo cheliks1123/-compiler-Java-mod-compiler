@@ -225,7 +225,8 @@ private:
 
         log("Загрузка: " + c.url.toString());
         QNetworkRequest req(c.url);
-        req.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+        req.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
+                         QNetworkRequest::NoLessSafeRedirectPolicy);
         req.setHeader(QNetworkRequest::UserAgentHeader, "LibGetGui/1.0");
         reply_ = nam_.get(req);
         setBusy(true);
