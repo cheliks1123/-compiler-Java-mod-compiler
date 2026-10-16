@@ -1,4 +1,4 @@
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): // LibGet GUI — загрузчик библиотек на Qt 6 (Widgets + Network)
+// LibGet GUI — загрузчик библиотек на Qt 6 (Widgets + Network)
 //
 // Сборка:
 //   cmake -B build -DCMAKE_PREFIX_PATH=/путь/к/Qt/6.x/gcc_64
@@ -80,7 +80,7 @@ static const QList<Lib> REGISTRY = {
     // Записи "github:владелец/репо" — программа сама берёт последний релиз.
     {"Poco",         "github:pocoproject/poco",          "Poco C++ Libraries (сеть, HTTP, JSON)"},
     {"cpr",          "github:libcpr/cpr",                "cpr — HTTP-клиент (обёртка над curl)"},
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): {"Crow",         "github:CrowCpp/Crow",              "Crow — микро веб-фреймворк"},
+    {"Crow",         "github:CrowCpp/Crow",              "Crow — микро веб-фреймворк"},
     {"cxxopts",      "github:jarro2783/cxxopts",         "cxxopts — разбор аргументов командной строки"},
     {"CLI11",        "github:CLIUtils/CLI11",            "CLI11 — разбор аргументов командной строки"},
     {"RapidJSON",    "github:Tencent/rapidjson",         "RapidJSON — быстрый JSON"},
@@ -133,7 +133,7 @@ static const KnownHeader KNOWN_HEADERS[] = {
     {"AL/", "OpenAL"},          {"vulkan/", "Vulkan-Headers"}, {"doctest/", "doctest"},
     {"benchmark/", "benchmark"}, {"tinyxml2.h", "tinyxml2"}, {"toml++/", "toml++"},
     {"date/", "date"},          {"ftxui/", "FTXUI"},         {"mimalloc.h", "mimalloc"},
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): {"cpr/", "cpr"},            {"crow.h", "Crow"},          {"crow/", "Crow"},
+    {"cpr/", "cpr"},            {"crow.h", "Crow"},          {"crow/", "Crow"},
     {"cxxopts.hpp", "cxxopts"}, {"CLI/", "CLI11"},           {"rapidjson/", "RapidJSON"},
     {"Poco/", "Poco"},          {"stb_", "stb"},             {"taskflow/", "Taskflow"},
     {"magic_enum", "magic_enum"}, {"range/v3/", "range-v3"}, {"btBulletDynamicsCommon.h", "Bullet"},
@@ -217,7 +217,7 @@ public:
         compilerCb_ = new QComboBox;
         for (const QString& c : QStringList{"g++", "clang++", "c++", "cl"}) {
             QString p = QStandardPaths::findExecutable(c);
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): if (!p.isEmpty()) compilerCb_->addItem(c + "   (" + p + ")", p);
+            if (!p.isEmpty()) compilerCb_->addItem(c + "   (" + p + ")", p);
         }
         if (compilerCb_->count() == 0) compilerCb_->addItem("не найден (g++, clang++, cl)", QString());
         stdCb_ = new QComboBox;
@@ -307,7 +307,7 @@ public:
         });
         connect(buildBrowse, &QPushButton::clicked, this, [this] {
             QString d = QFileDialog::getExistingDirectory(this, "Папка сборки", buildDirEdit_->text());
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): if (!d.isEmpty()) { buildDirEdit_->setText(d); buildDirManual_ = true; }
+            if (!d.isEmpty()) { buildDirEdit_->setText(d); buildDirManual_ = true; }
         });
         connect(buildDirEdit_, &QLineEdit::textEdited, this, [this] { buildDirManual_ = true; });
         connect(analyzeBtn_, &QPushButton::clicked, this, &BuildPage::analyze);
@@ -406,7 +406,7 @@ private:
         if (singleFile()) {
             sources_ << QFileInfo(p).absoluteFilePath();
             scanIncludes(sources_.first());
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): } else {
+        } else {
             scanDir(QDir(QFileInfo(p).absoluteFilePath()), 0, cmakeFiles);
             hasCMake_ = QFileInfo::exists(rootDir() + "/CMakeLists.txt");
         }
@@ -491,7 +491,8 @@ private:
             if (h.startsWith(QLatin1String(k.prefix), Qt::CaseInsensitive)) return k.lib;
         return {};
     }
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): void scanIncludes(const QString& path) {
+
+    void scanIncludes(const QString& path) {
         const QString text = readText(path);
         if (text.isEmpty()) return;
         ++scanned_;
@@ -576,7 +577,7 @@ private:
             if (configureOnly || !QFileInfo::exists(bdir + "/CMakeCache.txt"))
                 steps << Step{cmake, cfg, root, "CMake: настройка"};
             if (!configureOnly)
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): steps << Step{cmake, {"--build", bdir, "--config", type, "--parallel"}, root, "Сборка"};
+                steps << Step{cmake, {"--build", bdir, "--config", type, "--parallel"}, root, "Сборка"};
         } else {
             if (configureOnly) {
                 appendOutput("Настройка нужна только для CMake-проектов. Нажмите «Собрать».\n");
@@ -672,7 +673,7 @@ private:
         proc_ = p;
         lineBuf_.clear();
         pendingCMake_ = nullptr;
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): p->setProcessChannelMode(QProcess::MergedChannels);
+        p->setProcessChannelMode(QProcess::MergedChannels);
         p->setWorkingDirectory(s.workDir);
         connect(p, &QProcess::readyReadStandardOutput, this,
                 [this, p] { onData(p->readAll()); });
@@ -771,7 +772,7 @@ private:
 
         QRegularExpressionMatch m;
         if ((m = cmakeAt.match(line)).hasMatch()) {
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): QString msg = "(" + m.captured(4) + ")";
+            QString msg = "(" + m.captured(4) + ")";
             if (!m.captured(5).isEmpty()) msg += " " + m.captured(5);
             auto* it = addProblem(m.captured(1) == "Error" ? "error" : "warning",
                                   "CMake: " + msg, m.captured(2), m.captured(3).toInt());
@@ -864,7 +865,8 @@ private:
     bool stopped_ = false;
     int errorCount_ = 0, warningCount_ = 0;
 };
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): class MainWindow : public QWidget {
+
+class MainWindow : public QWidget {
     Q_OBJECT
 public:
     MainWindow() {
@@ -951,7 +953,7 @@ public:
         ghLay->addWidget(ghBtn);
 
         auto* dirBox = new QGroupBox("Папка сохранения");
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): auto* dirLay = new QVBoxLayout(dirBox);
+        auto* dirLay = new QVBoxLayout(dirBox);
         auto* dirRow1 = new QHBoxLayout;
         dirRow1->addWidget(new QLabel("Скачать в:"));
         dirRow1->addWidget(dirEdit_, 1);
@@ -1037,7 +1039,7 @@ public:
                 });
         connect(browseBtn, &QPushButton::clicked, this, [this] {
             QString d = QFileDialog::getExistingDirectory(this, "Папка сохранения", dirEdit_->text());
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): if (!d.isEmpty()) dirEdit_->setText(d);
+            if (!d.isEmpty()) dirEdit_->setText(d);
         });
         connect(openBtn, &QPushButton::clicked, this, [this] {
             QDir().mkpath(dirEdit_->text());
@@ -1129,7 +1131,7 @@ private:
             return;
         }
         QApplication::setStyle("Fusion");
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): if (idx == 0) {
+        if (idx == 0) {
             QApplication::setPalette(QApplication::style()->standardPalette());
             return;
         }
@@ -1178,7 +1180,7 @@ private:
         if (busy()) return;
         QString repo = ghEdit_->text().trimmed();
         QString ref = refEdit_->text().trimmed();
-        if (repo.count('/') != 1  repo.startsWith('/')  repo.endsWith('/')) {
+        if (repo.count('/') != 1 || repo.startsWith('/') || repo.endsWith('/')) {
             QMessageBox::warning(this, "Ошибка", "Укажите репозиторий в виде владелец/репо.");
             return;
         }
@@ -1230,7 +1232,8 @@ private:
                    Candidate{QUrl(base + "heads/" + ref + ".tar.gz"), name + "-" + ref + ".tar.gz"}});
             return;
         }
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): // Версия не указана: узнаём последний релиз, иначе берём main/master.
+
+        // Версия не указана: узнаём последний релиз, иначе берём main/master.
         QNetworkRequest req(QUrl("https://api.github.com/repos/" + repo + "/releases/latest"));
         req.setHeader(QNetworkRequest::UserAgentHeader, "LibGetGui/1.0");
         req.setRawHeader("Accept", "application/vnd.github+json");
@@ -1327,7 +1330,7 @@ private:
                         bar_->setValue(int(got * 100 / total));
                         statusLabel_->setText(QString("%1 / %2 МБ")
                                                   .arg(got / 1048576.0, 0, 'f', 1)
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): .arg(total / 1048576.0, 0, 'f', 1));
+                                                  .arg(total / 1048576.0, 0, 'f', 1));
                     } else {
                         bar_->setRange(0, 0);  // неопределённый прогресс
                         statusLabel_->setText(QString("%1 МБ").arg(got / 1048576.0, 0, 'f', 1));
@@ -1441,7 +1444,8 @@ private:
     }
 
     void log(const QString& s) { log_->appendPlainText(s); }
-[16.10.2026 14:04] ༒ 𝙎𝙮𝙧𝙚𝙓 ༒(Akmal): QListWidget *list_, *results_;
+
+    QListWidget *list_, *results_;
     QLineEdit *urlEdit_, *ghEdit_, *refEdit_, *dirEdit_, *searchEdit_;
     QPushButton *downloadBtn_, *cancelBtn_, *searchBtn_, *batchBtn_;
     QStringList jobs_;                  // очередь: "github:владелец/репо" или ссылка
