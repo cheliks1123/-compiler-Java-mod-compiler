@@ -6,6 +6,8 @@
 //   ./build/libget_gui
 
 #include <QApplication>
+#include <functional>
+
 #include <QCheckBox>
 #include <QFontDatabase>
 #include <QFormLayout>
@@ -172,7 +174,6 @@ static bool inRegistry(const QString& name) {
 }
 
 class BuildPage : public QWidget {
-    Q_OBJECT
 public:
     explicit BuildPage(QWidget* parent = nullptr) : QWidget(parent) {
         // ---- Путь к проекту ----
@@ -333,7 +334,7 @@ public:
                     "Найдите их через поиск GitHub на странице загрузки.");
                 return;
             }
-            emit requestDownload(names);
+            if (onRequestDownload) onRequestDownload(names);
         });
         connect(problems_, &QTreeWidget::itemDoubleClicked, this,
                 [this](QTreeWidgetItem* it) { openProblemFile(it); });
@@ -342,8 +343,8 @@ public:
             analyze();
     }
 
-signals:
-    void requestDownload(const QStringList& names);
+    // Вызывается по кнопке «Скачать выбранные библиотеки» (задаёт главное окно)
+    std::function<void(const QStringList&)> onRequestDownload;
 
 private:
     struct Step {
@@ -867,7 +868,6 @@ private:
 };
 
 class MainWindow : public QWidget {
-    Q_OBJECT
 public:
     MainWindow() {
         setWindowTitle("LibGet — загрузчик библиотек");
@@ -996,7 +996,9 @@ public:
         tabs_->addTab(build_, "Сборка");
         auto* main = new QVBoxLayout(this);
         main->addWidget(tabs_);
-        connect(build_, &BuildPage::requestDownload, this, &MainWindow::selectInRegistryByNames);
+        build_->onRequestDownload = [this](const QStringList& names) {
+            selectInRegistryByNames(names);
+        };
 
         // --- Сигналы ---
         connect(list_, &QListWidget::currentItemChanged, this,
@@ -1474,5 +1476,3 @@ int main(int argc, char** argv) {
     w.show();
     return app.exec();
 }
-
-#include "main.moc"
